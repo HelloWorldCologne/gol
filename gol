@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+def draw_board(board):
+	for row in board: 
+		draw_row(row)
+def draw_row(row):
+	print(' '.join([draw_cell(cell) for cell in row]))
+
+def draw_cell(cell):
+	if cell == 0 : return ' '
+	else: return '#'
+def create_empty(h,w):
+	return [[1 for x in range(w)] for y in range(h)]
+		
+
+board = create_empty(5,5)
+draw_board(board)
+
