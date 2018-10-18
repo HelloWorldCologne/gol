@@ -1,5 +1,5 @@
-import numpy as npgi
-
+import numpy as np
+import copy
 universe = np.zeros((6,6))
 
 beacon = [
@@ -11,38 +11,45 @@ beacon = [
 
 
 universe[1:5, 1:5] = beacon
-print(universe) 	
-def count_neighbours(u,x,y):
-	neighbours = 0
-	for ix,row in enumerate(u):
-		for iy,elm in enumerate(row):
-			if(u[ix][iy] == 1.0):
-				neighbours = neighbours + 1
-	return neighbours-1
+print(universe)
 
-def check_health(u,r,c,num_neighbours):
-	if(not 2 <= num_neighbours <= 3):
-		# u[r][c] = 0.0
-		return 0
-	elif(num_neighbours == 3):
-		#u[r][c] = 1.0
-		return 1
-		
 def life_proccessing(u):
+	new_u = u.copy()
 	for irow,row in enumerate(u):
-		for icol ,col in enumerate(row):
-			if(u[irow][icol] == 1.0):
-				u1= u[irow-1:irow+2,icol-1:icol+2]
-				print(u1)
-				neighbours = count_neighbours(u1,irow,icol)
-				print(neighbours)
-				cell_status = check_health(u1,irow,icol,neighbours)
-				print(cell_status)
-				print("row " +str(irow)+" col : "+ str(icol)
-				if(cell_status == 0):
-					u[irow][icol]=0.0
-				new_u = u
+		for icol ,elm in enumerate(row):
+			num_neighbours = count_neighbours(u,irow,icol)
+			new_u[irow][icol] = check_health(elm,num_neighbours)
 	return new_u
+
+def count_neighbours(u,ir,ic):
+	u1= u[ir-1:ir+2,ic-1:ic+2]
+	return count_ones(u1)-u[ir][ic]
+
+def count_ones(u):
+	neighbours = 0
+	for ir,row in enumerate(u):
+		for ic,elm in enumerate(row):
+			if(elm == 1.0):
+				neighbours = neighbours + 1
+	return neighbours
+
+def check_health(elm,num_neighbours):
+	if(elm == 1):
+		return check_health_live_cell(num_neighbours)
+	else:
+		return check_health_dead_cell(num_neighbours)
+
+def check_health_live_cell(num_neighbours):
+	if(num_neighbours < 2 or num_neighbours > 3):
+		return 0
+	else:
+		return 1
+def check_health_dead_cell(num_neighbours):
+	if(num_neighbours == 3):
+		return 1
+	else:
+		return 0
+
 print("###########################")
 print(life_proccessing(universe))
 
