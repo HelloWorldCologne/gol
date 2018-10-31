@@ -11,9 +11,12 @@ beacon = [
 
 
 universe[1:5, 1:5] = beacon
-print(universe)
+def run(u):
+	print(u)
+	input("deep next ...")
+	run(life_processing(u))
 
-def life_proccessing(u):
+def life_processing(u):
 	new_u = u.copy()
 	for irow,row in enumerate(u):
 		for icol ,elm in enumerate(row):
@@ -51,5 +54,5 @@ def check_health_dead_cell(num_neighbours):
 		return 0
 
 print("###########################")
-print(life_proccessing(universe))
+run(universe)
 
