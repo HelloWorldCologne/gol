@@ -1,17 +1,68 @@
 #!/usr/bin/env python
+import numpy as np
+import copy
+universe = np.zeros((6,6))
+
+beacon = [
+[1,1,0,0],
+[1,1,0,0],
+[0,0,1,1],
+[0,0,1,1]
+]
+
+
+universe[1:5, 1:5] = beacon
+def run(u):
+        draw_board(u)
+        input("deep next ...")
+        run(life_processing(u))
+
+def life_processing(u):
+        new_u = u.copy()
+        for irow,row in enumerate(u):
+                for icol ,elm in enumerate(row):
+                        num_neighbours = count_neighbours(u,irow,icol)
+                        new_u[irow][icol] = check_health(elm,num_neighbours)
+        return new_u
+
+def count_neighbours(u,ir,ic):
+        u1= u[ir-1:ir+2,ic-1:ic+2]
+        return count_ones(u1)-u[ir][ic]
+
+def count_ones(u):
+        neighbours = 0
+        for ir,row in enumerate(u):
+                for ic,elm in enumerate(row):
+                        if(elm == 1.0):
+                                neighbours = neighbours + 1
+        return neighbours
+
+def check_health(elm,num_neighbours):
+        if(elm == 1):
+                return check_health_live_cell(num_neighbours)
+        else:
+                return check_health_dead_cell(num_neighbours)
+
+def check_health_live_cell(num_neighbours):
+        if(num_neighbours < 2 or num_neighbours > 3):
+                return 0
+        else:
+                return 1
+def check_health_dead_cell(num_neighbours):
+        if(num_neighbours == 3):
+                return 1
+        else:
+                return 0
+#draw cells 
 def draw_board(board):
 	for row in board: 
 		draw_row(row)
 def draw_row(row):
 	print(' '.join([draw_cell(cell) for cell in row]))
-
 def draw_cell(cell):
 	if cell == 0 : return ' '
 	else: return '#'
-def create_empty(h,w):
-	return [[1 for x in range(w)] for y in range(h)]
-		
 
-board = create_empty(5,5)
-draw_board(board)
+print("###########################")
+run(universe)
 
