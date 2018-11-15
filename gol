@@ -2,18 +2,14 @@
 import numpy as np
 import copy
 import sys
-universe_size = 6
+import random
+universe_size = 12
+board_size = universe_size -2
 universe = np.zeros((universe_size,universe_size))
 
-beacon = [
-[1,1,0,0],
-[1,1,0,0],
-[0,0,1,1],
-[0,0,1,1]
-]
+beacon = [[random.randint(0,1) for x in range(board_size)] for y in range(board_size)]
 
-
-universe[1:5, 1:5] = beacon
+universe[1:board_size +1, 1:board_size+1] = beacon
 def run(u):
         draw_board(u)
         user_Input = raw_input("any Key to continue and q to exit  :   ")
