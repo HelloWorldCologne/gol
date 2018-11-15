@@ -14,8 +14,12 @@ beacon = [
 universe[1:5, 1:5] = beacon
 def run(u):
         draw_board(u)
-        input("deep next ...")
-        run(life_processing(u))
+        user_Input = raw_input("any Key to continue and q to exit  :   ")
+        if user_Input.lower() == "q" :
+                print("GoodBye") 
+        else :
+                run(life_processing(u))
+        
 
 def life_processing(u):
         new_u = u.copy()
